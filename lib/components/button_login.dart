@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 
 class CumstonButton extends StatefulWidget {
 
+  final Color colorBorder;
   final String texto;
   final VoidCallback callback;
-  CumstonButton({@required this.texto, this.callback });
+  CumstonButton({ this.colorBorder = Colors.black, @required this.texto, this.callback });
 
   @override
   _CumstonButtonState createState() => _CumstonButtonState();

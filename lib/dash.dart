@@ -48,6 +48,23 @@ class _DashState extends State<Dash> {
 
 }
 
+
+  void laboralCheck() async {
+    pr = new ProgressDialog(context, ProgressDialogType.Normal);
+    pr.setMessage("Cargando..");
+    pr.show();
+    final res = await ApiClient.LaborRequest();
+    List<LaborSocial> lstL = new List<LaborSocial>();
+    List<dynamic> ls = res["message"];
+    for (var obj in ls) {
+      LaborSocial l = new LaborSocial(obj["id"], obj["usuario"], obj["horas"],
+          obj["documento"], obj["idUniversitario"], obj["nombreUsuario"]);
+      lstL.add(l);
+    }
+    pr.hide();
+    Navigator.of(context).push(_NewPage("Labor social", lstL));
+  }
+
   @override
   Widget build(BuildContext context) {
     /////////////////////////////////////////////////////////////////////////

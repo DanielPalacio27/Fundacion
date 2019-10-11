@@ -47,3 +47,243 @@ class _DashState extends State<Dash> {
   List<Noticia> lst;
 
 }
+
+  @override
+  Widget build(BuildContext context) {
+    /////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////
+    //////////////TODO:PROPIEDADES DEL MENU LATERA///////////////////////////
+    /////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////
+    lst = new List();
+    lst.add(noticia);
+    lst.add(noticia1);
+    lst.add(noticia2);
+/*    for (var i = 0; i < 2; i++) {
+      var noti = noticia;
+      noti.title = "DIMERSI SE VOLVIO GAY! $i";
+      lst.add(noti);
+    }*/
+    final drawerHeader = UserAccountsDrawerHeader(
+      accountName: Text(globals.user.nombre),
+      accountEmail: Text(''),
+      currentAccountPicture: CircleAvatar(
+        child: ClipOval(child: Image.asset("assets/img/escudo.png")
+/*          FadeInImage.assetNetwork(
+            placeholder: 'assets/img/loading.gif',
+            image:'assets/img/escudo.png',
+            width: 75.0,
+            height: 75.0,
+            fit: BoxFit.cover,
+          ),*/
+            ),
+        //FadeInImage.assetNetwork(placeholder: 'assets/img/loading.gif', image: "https://marcianosmx.com/wp-content/uploads/2013/08/minimoo64_fractals_01.jpg",width: 75.0,height: 75.0,fit: BoxFit.cover,),
+        backgroundColor: Colors.white,
+      ),
+/*      otherAccountsPictures: <Widget>[
+        CircleAvatar(
+          child: Text('A'),
+          backgroundColor: Colors.yellow,
+        ),
+        CircleAvatar(
+          child: Text('B'),
+          backgroundColor: Colors.red,
+        )
+      ],*/
+    );
+    final drawerItems = ListView(
+      children: <Widget>[
+        drawerHeader,
+        ListTile(
+          leading: Icon(Icons.event_note),
+          title: Text('Labor social'),
+          onTap: () => this.laboralCheck(),
+        ),
+        ListTile(
+          leading: Icon(Icons.subdirectory_arrow_left),
+          title: Text('Cerrar sesión'),
+          onTap: () => this.cerrarSesion(),
+        ),
+/*        ListTile(
+          leading: Icon(Icons.art_track),
+          title: Text('Noticias'),
+          onTap: () => Navigator.of(context)
+              .push(_Noticias("Noticias", urlImagenAvatar, noticia, lst)),
+        ),*/
+/*        ListTile(
+          leading: Icon(Icons.new_releases),
+          title: Text('other drawer item'),
+          onTap: () {},
+        ),*/
+      ],
+    );
+    /////////////////////////////////////////////////////////////////////
+
+    return Scaffold(
+        appBar: AppBar(
+          title: Text("UPB"),
+        ),
+        body: _getDrawerItemWidget(_selectedDrawerIndex),
+        drawer: Drawer(
+          child: drawerItems,
+        ));
+  }
+
+class _Noticias extends MaterialPageRoute<Null> {
+  final String _titulo;
+  final String _url;
+  final Noticia noticia;
+  final List<Noticia> lst;
+
+  _Noticias(this._titulo, this._url, this.noticia, this.lst)
+      : super(builder: (BuildContext context) {
+          return DefaultTabController(
+            initialIndex: 0,
+            length: 1,
+            child: Scaffold(
+                appBar: AppBar(
+                  title: Text('$_titulo'),
+                  elevation: 1.0,
+                ),
+                body: Stack(
+                  children: <Widget>[
+/*                    Center(
+                      child: CircularProgressIndicator(
+                        backgroundColor: Colors.white,
+                        strokeWidth: 2.5,
+                      ),
+                    ),*/
+                    TabBarView(
+                      children: <Widget>[
+                        ListView.builder(
+                          itemCount: lst == null ? 0 : lst.length,
+                          itemBuilder: (_, int i) {
+                            return Column(
+                              children: <Widget>[
+                                Padding(
+                                  padding: const EdgeInsets.all(0.0),
+                                  child: Card(
+                                    color: Colors.white,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.only(topRight: Radius.circular(5.0),topLeft: Radius.circular(5.0),bottomLeft: Radius.circular(5.0),bottomRight: Radius.circular(50.0)),
+                                    ),
+                                    child: ListTile(
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (BuildContext context) =>
+                                                ArticleDetail(
+                                              articles: lst[i],
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      title: Container(
+                                        child: Stack(
+                                          alignment: AlignmentDirectional(0, 1),
+                                          children: <Widget>[
+                                            Hero(
+                                                tag: i,
+                                                child: Padding(
+                                                  padding: EdgeInsets.only(
+                                                      bottom: 0,
+                                                      left: 0,
+                                                      right: 0,
+                                                      top: 0),
+                                                  child:
+                                                      FadeInImage.assetNetwork(
+                                                    placeholder:
+                                                        'assets/img/loading.gif',
+                                                    image: lst[i].image == null
+                                                        ? Image.asset(
+                                                            'assets/img/imgPlaceholder.png',
+                                                          )
+                                                        : lst[i].image,
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                            .size
+                                                            .width,
+                                                    height: 200,
+                                                    fit: BoxFit.fill,
+                                                  ),
+                                                )),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(0.0),
+                                              child: new Container(
+                                                  decoration: new BoxDecoration(
+                                                      color: Colors.black
+                                                          .withOpacity(0.5)),
+                                                  width: MediaQuery.of(context)
+                                                      .size
+                                                      .width,
+                                                  height: 40,
+                                                  child: new Center(
+                                                    child: Text(
+                                                      lst[i].name == null
+                                                          ? Text("Title here")
+                                                              .toString()
+                                                          : lst[i]
+                                                              .title
+                                                              .toString(),
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 18.0,
+                                                      ),
+                                                    ),
+                                                  )),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                      subtitle: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: <Widget>[
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 2.0),
+                                            child: FlatButton(
+                                              splashColor: Colors.redAccent,
+                                              onPressed: () {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (BuildContext
+                                                            context) =>
+                                                        ArticleDetail(
+                                                      articles: lst[i],
+                                                    ),
+                                                  ),
+                                                );
+                                              },
+                                              child: Text(
+                                                "Leer más",
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.blue,
+                                                  fontSize: 18.0,
+                                                ),
+                                              ),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Container(),
+                              ],
+                            );
+                          },
+                        )
+                      ],
+                    )
+                  ],
+                )),
+          );
+        });
+}

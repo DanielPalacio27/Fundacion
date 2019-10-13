@@ -65,6 +65,28 @@ class _DashState extends State<Dash> {
     Navigator.of(context).push(_NewPage("Labor social", lstL));
   }
 
+
+
+@override
+  void initState(){
+    super.initState();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+  }
+
+  @override
+  dispose(){
+    super.dispose();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeRight,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+  }
+
   @override
   Widget build(BuildContext context) {
     /////////////////////////////////////////////////////////////////////////
@@ -146,6 +168,48 @@ class _DashState extends State<Dash> {
         ));
   }
 
+
+  _getDrawerItemWidget(int pos) {
+    switch (pos) {
+      case 0:
+        return new NoticiasFragment();
+      default:
+        return new Text("Error");
+    }
+  }
+
+  _onSelectItem(int index) {
+    setState(() => _selectedDrawerIndex = index);
+    Navigator.of(context).pop(); // close the drawer
+  }
+}
+
+// <Null> means this route returns nothing.
+class _NewPage extends MaterialPageRoute<Null> {
+  final String _titulo;
+  final List<LaborSocial> lst;
+
+  _NewPage(this._titulo, this.lst)
+      : super(builder: (BuildContext context) {
+          return Scaffold(
+            appBar: AppBar(
+              title: Text('$_titulo'),
+              elevation: 1.0,
+            ),
+            body: Center(
+              child: LaborSocialDateTable(
+                lst: lst,
+              ),
+            ),
+          );
+        });
+
+
+
+}
+Color hexToColor(String hexString, {String alphaChannel = 'FF'}) {
+  return Color(int.parse(hexString.replaceFirst('#', '0x$alphaChannel')));
+}
 class _Noticias extends MaterialPageRoute<Null> {
   final String _titulo;
   final String _url;

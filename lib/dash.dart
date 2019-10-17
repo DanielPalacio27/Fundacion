@@ -48,6 +48,40 @@ class _DashState extends State<Dash> {
 
 }
 
+void cerrarSesion() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text("Alerta!"),
+          content: new Text("Desea cerrar sesion?"),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            new FlatButton(
+              child: new Text("Cancelar"),
+              onPressed: () {},
+            ),
+            new FlatButton(
+                onPressed: () {
+                  limpiarDatos();
+                  Navigator.of(context)
+                      .pushNamedAndRemoveUntil("/login", (routes) => false);
+                },
+                child: new Text("Aceptar"))
+          ],
+        );
+      },
+    );
+  }
+
+  void limpiarDatos() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString("token", "");
+    prefs.setString("nombre", "");
+    prefs.setString("id", "");
+    prefs.setString("expiration", "");
+  }
 
   void laboralCheck() async {
     pr = new ProgressDialog(context, ProgressDialogType.Normal);
